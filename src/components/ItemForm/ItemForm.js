@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { isEmpty } from 'lodash';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'react-final-form';
+import { Titled } from 'react-titled';
 
 import stripesFinalForm from '@folio/stripes/final-form';
 
@@ -145,16 +146,20 @@ class ItemForm extends React.Component {
                 {placeholder => (
                   <FormattedMessage id="ui-checkout.itemId">
                     {ariaLabel => (
-                      <Field
-                        fullWidth
-                        name="item.barcode"
-                        component={TextField}
-                        aria-label={ariaLabel}
-                        id="input-item-barcode"
-                        placeholder={placeholder}
-                        inputRef={this.barcodeEl}
-                        validationEnabled={validationEnabled}
-                      />
+                      <Titled title={title => (this.state.readyToScan ? `Ready - ${title}` : title)}>
+                        <Field
+                          fullWidth
+                          name="item.barcode"
+                          component={TextField}
+                          aria-label={ariaLabel}
+                          id="input-item-barcode"
+                          placeholder={placeholder}
+                          inputRef={this.barcodeEl}
+                          validationEnabled={validationEnabled}
+                          onFocus={() => this.setState({ readyToScan: true })}
+                          onBlur={() => this.setState({ readyToScan: false })}
+                        />
+                      </Titled>
                     )}
                   </FormattedMessage>
                 )}
